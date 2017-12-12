@@ -6,7 +6,13 @@ Scripts to assist seed planning for Stardew Valley speedruns
 - **Utility.py** contains dumb codes to just convert raw days to Year/Season/Day format
 - **ObjectInfo.py** contains a dict of item codes for all item objects (does not include tools/weapons)
 
-Stardew Valley uses the time of file creation as a seed for a large number of random events in-game. By setting your computer's clock to a time and tracking it closely, you could attempt to select a specific seed at startup.
+Stardew Valley uses the time of game launch/"exit to title" as a seed for a large number of random events in-game. It computes this via (C#)
+```
+gameID = (ulong)(DateTime.UtcNow - new DateTime(2012, 6, 22)).TotalSeconds;
+```
+
+This means you can seed your game by changing the clock time and exiting to title from a current game in order to lock in a particular seed.
+
 
 ### Mushroom Floor:
 Each day the mushroom floor will spawn on a floor between 80-120. The floor it spawns on is entirely based on the initial seed and the current day number, so we can easily track when and where the floor will spawn. Note there are many days where the mushroom floor will not exist, either due to being spawned on a floor number that's divisible by 5 (80, 85, etc.) or other random catches.
