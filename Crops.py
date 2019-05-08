@@ -1,5 +1,8 @@
-from CSRandom import CSRandom
+from CSRandom import CSRandomLite
+import numpy as np
 
+# experience is NOT based on quality
+# quality is just money equivalent
 def harvest_quality(gameID, dayNumber, fLevel, xTile, yTile, fertilizer=None):
 	number = 1
 	quality = 0
@@ -10,7 +13,7 @@ def harvest_quality(gameID, dayNumber, fLevel, xTile, yTile, fertilizer=None):
 		elif fertilizer == 'Quality':
 			num3 = 2
 
-	rand = CSRandom(xTile*7 + yTile*11 + gameID + dayNumber)
+	rand = CSRandomLite(xTile*7 + yTile*11 + gameID + dayNumber)
 	num4 = 0.2 * (fLevel/10.0) + 0.2 * num3 * (fLevel+2.0)/12.0 + 0.01
 	num5 = min(0.75, num4*2.0)
 	if rand.Sample() < num4:
@@ -20,26 +23,42 @@ def harvest_quality(gameID, dayNumber, fLevel, xTile, yTile, fertilizer=None):
 	
 	return quality
 
+def find_best_days(seed, season, fLevel, xTile, yTile, fertilizer=None):
+    max_quality = -1
+    days = []
+    for dayInMonth in range(1, 28 + 1):
+        day = (season-1)*28 + dayInMonth
+        if (season % 4) == 0:
+            continue
+        if (season % 4) == 1:
+            if dayInMonth < 5:
+                continue
+        if (season % 4) == 2:
+            if dayInMonth < 13:
+                continue
+        if (season % 4) == 3:
+            if dayInMonth < 15:
+                continue
+        quality = harvest_quality(seed, day, fLevel, xTile, yTile, fertilizer)
+        if quality > max_quality:
+            days = [day]
+            max_quality = quality
+        elif quality == max_quality:
+            days.append(dayInMonth)
+    return max_quality, days
+	
 if __name__ == '__main__':
-	import sys
 	def printArr(arr):
 		print('\n'.join(' '.join('%2d'%cell for cell in row) for row in arr))
-	def printHouse():
-		print('__ __ __ __ __ __ __ __ Gr Ho Ho Ho Ho St St St Ho Ho Ma Gr Gr __ Pa Gr Gr Gr')
-		print('__ __ __ __ __ __ __ __ Gr Gr Gr Gr Gr Gr Gr Gr Gr Gr Gr Gr __ __ Pa Pa Pa Pa')
-	if len(sys.argv) >= 2:
-		gameID = int(sys.argv[1])
-	else: 
-		gameID = 143594438
-	# Location in front of house	
 	yStart=18
 	yEnd=27
 	xStart=50
 	xEnd=75
 	
-	dayStart= 5
-	dayEnd = 28
-	fLevel = 0
+	dayStart= 43
+	dayEnd = 43
+	gameID = 143594438
+	fLevel = 2
 
 	import numpy as np
 
@@ -54,7 +73,8 @@ if __name__ == '__main__':
 					quality[y-yStart,x-xStart] = q
 					days[y-yStart,x-xStart] = d
 		
-	days[quality != 2] = 0
+	
+	print('Quality:')
+	printArr(quality)
 	print('Day:')
-	printHouse()
 	printArr(days)

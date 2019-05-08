@@ -1,5 +1,5 @@
 ObjectInfo = {
-    0: "Weeds/0/-1/Basic/Weeds/A bunch of obnoxious weeds." ,
+	 0: "Weeds/0/-1/Basic/Weeds/A bunch of obnoxious weeds." ,
     2: "Stone/0/-300/Basic/Stone/A useful material when broken with the Pickaxe." ,
     4: "Stone/0/-300/Basic/Stone/A useful material when chopped with the axe." ,
     16: "Wild Horseradish/50/5/Basic -81/Wild Horseradish/A spicy root found in the spring." ,

@@ -3,16 +3,16 @@ import numpy as np
 # C# Random Notes!
 ### Reseeding is BAD! Stardew Valley does it ALL OF THE TIME
 # First Call
-# * `CSRandom(0).sample() = 0.72624326996795985`
-# * `CSRandom(i).sample() = CSRandom(0).sample() + i * 0.52242531418913285`
+# * `CSRandom(0).Sample() = 0.72624326996795985`
+# * `CSRandom(i).Sample() = CSRandom(0).Sample() + i * 0.52242531418913285`
 
 # Second Call
-# * `CSRandom(0).sample().sample() = 0.8173253595909687`
-# * `CSRandom(i).sample().sample() = CSRandom(0).sample().sample() + i * 0.29341861759005994`
+# * `CSRandom(0).Sample().Sample() = 0.8173253595909687`
+# * `CSRandom(i).Sample().Sample() = CSRandom(0).Sample().Sample() + i * 0.29341861759005994`
 
 # Third Call
-# * `CSRandom(0).sample().sample().sample() = 0.76802268939466334`
-# * `CSRandom(i).sample().sample().sample() = CSRandom(0).sample().sample().sample() + i * 0.69898799047758242`
+# * `CSRandom(0).Sample().Sample().Sample() = 0.76802268939466334`
+# * `CSRandom(i).Sample().Sample().Sample() = CSRandom(0).Sample().Sample().Sample() + i * 0.69898799047758242`
 
 # First 10 intercepts and offsets (accuracy is probably there at 13 decimal places):
 # * 0: 0.7262432699679598, 0.5224253141891330
@@ -37,24 +37,23 @@ class CSRandomLite():
 		self.seed = seed
 		self.index = 0
 	
-	def sample(self):
-        if self.index >= 100:
-            raise IndexError('CSRandomLite works for less than 100 consecutive rng calls, use CSRandom if need to maintain long term state')
+	def Sample(self):
+		if self.index >= 100:
+			raise IndexError('CSRandomLite works for less than 100 consecutive rng calls, use CSRandom if need to maintain long term state')
 		val = (self.seed * self._offsets[self.index] + self._intercepts[self.index]) % 1
 		self.index += 1
-        if 
 		return val
 
-	def next(self, minVal=0.5, maxVal=0.5):
+	def Next(self, minVal=0.5, maxVal=0.5):
 		if minVal != 0.5 and maxVal == 0.5:
 			if minVal < 0:
 				raise ValueError('range must be positive')
-			return int(self.sample() * minVal)
+			return int(self.Sample() * minVal)
 		else:
 			ran = maxVal - minVal
 			if ran > self.MAX_INT:
 				raise ValueError('Cannot handle ranges over negative numbers')
-			return int(self.sample() * ran) + minVal
+			return int(self.Sample() * ran) + minVal
 
 # Csharp random is dumb, so we have to reimplement it's RNG here
 class CSRandom():
@@ -115,17 +114,17 @@ class CSRandom():
 			res = -res
 		return (res + self.MAX_INT - 1)/(2.0*self.MAX_INT-1)
 
-	def sample(self):
+	def Sample(self):
 		return self.__sample()*(1.0/self.MAX_INT)
 
-	def next(self,minVal=0.5,maxVal=0.5):
+	def Next(self,minVal=0.5,maxVal=0.5):
 		if minVal == 0.5 and maxVal == 0.5:
 			return self.__sample()
 		elif minVal != 0.5 and maxVal == 0.5:
-			return int(self.sample()*minVal)
+			return int(self.Sample()*minVal)
 		else:
 			ran = maxVal - minVal
 			if ran <= self.MAX_INT :
-				return int(ran*self.sample()) + minVal
+				return int(ran*self.Sample()) + minVal
 			else:
 				return int(ran*self.__sample_lr()) + minVal
