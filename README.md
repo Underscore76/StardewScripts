@@ -2,7 +2,7 @@
 
 Scripts to assist seed planning for Stardew Valley speedruns
 
-- **CSRandom.py** is a direct recreate of the default C# random number generator implemented in python, allowing us to match exactly the game's RNG.
+- **CSRandom.py** is a direct recreate of the default C# random number generator implemented in python, allowing us to match exactly the game's RNG. Since the game reseeds constantly, most applications can use CSRandomLite, which takes advantage of constant reseeding to be able to directly calculate RNG values from the equation of a line instead of needing to properly seed an array and manipulate forward.
 - **Utility.py** contains dumb codes to just convert raw days to Year/Season/Day format
 - **ObjectInfo.py** contains a dict of item codes for all item objects (does not include tools/weapons)
 
