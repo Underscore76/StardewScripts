@@ -13,6 +13,8 @@ gameID = (ulong)(DateTime.UtcNow - new DateTime(2012, 6, 22)).TotalSeconds;
 
 This means you can seed your game by changing the clock time and exiting to title from a current game in order to lock in a particular seed.
 
+### Ancient Seed (new 10/31/19):
+The seed maker selects a seed to return based on the hidden game seed, the tile the seed maker is on, the day, and the time of day when a crop is put in it. Using that, you can manipulate an ancient seed spawn coming from the seed maker by puting it on a specific tile/operating with it at specific times. This notebook allows you to walk through both an individual hour or a series of hour-by-hour snapshots of the seed maker layout.
 
 ### Mushroom Floor:
 Each day the mushroom floor will spawn on a floor between 80-120. The floor it spawns on is entirely based on the initial seed and the current day number, so we can easily track when and where the floor will spawn. Note there are many days where the mushroom floor will not exist, either due to being spawned on a floor number that's divisible by 5 (80, 85, etc.) or other random catches.
